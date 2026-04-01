@@ -46,7 +46,7 @@ Device.init(
       defaultValue: DataTypes.NOW
     }
   },
-  { sequelize, tableName: "devices" }
+  { sequelize, tableName: "devices", underscored: true }
 );
 
 export class Tarif extends Model<
@@ -66,7 +66,7 @@ Tarif.init(
     pricePer15min: { type: DataTypes.INTEGER, allowNull: false },
     minimumPrice: { type: DataTypes.INTEGER, allowNull: false }
   },
-  { sequelize, tableName: "tarifs", timestamps: false }
+  { sequelize, tableName: "tarifs", timestamps: false, underscored: true }
 );
 
 export type SessionStatus = "active" | "paused" | "finished";
@@ -124,7 +124,7 @@ Session.init(
       allowNull: true
     }
   },
-  { sequelize, tableName: "sessions" }
+  { sequelize, tableName: "sessions", underscored: true }
 );
 
 export class Password extends Model<
@@ -152,7 +152,7 @@ Password.init(
       defaultValue: DataTypes.NOW
     }
   },
-  { sequelize, tableName: "passwords", updatedAt: false }
+  { sequelize, tableName: "passwords", updatedAt: false, underscored: true }
 );
 
 export class Payment extends Model<
@@ -176,7 +176,7 @@ Payment.init(
     amount: { type: DataTypes.INTEGER, allowNull: false },
     paidAt: { type: DataTypes.DATE, allowNull: false }
   },
-  { sequelize, tableName: "payments", updatedAt: false, createdAt: false }
+  { sequelize, tableName: "payments", updatedAt: false, createdAt: false, underscored: true }
 );
 
 export class User extends Model<
@@ -202,7 +202,7 @@ User.init(
       defaultValue: DataTypes.NOW
     }
   },
-  { sequelize, tableName: "users", updatedAt: false }
+  { sequelize, tableName: "users", updatedAt: false, underscored: true }
 );
 
 // Associations
