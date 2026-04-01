@@ -323,13 +323,19 @@ let bootstrapped = false;
 async function bootstrap() {
   if (bootstrapped) return;
   await createMigrator(sequelize).up();
-  const userCount = await User.count();
-  console.log(`Current user count: ${userCount}`);
-  if (userCount === 0) {
+  const adminEmail = "admin@example.com";
+  let admin = await User.findOne({ where: { email: adminEmail } });
+  const hash = await bcrypt.hash("admin", 10);
+  
+  if (!admin) {
     console.log("Creating default admin user...");
-    const hash = await bcrypt.hash("admin", 10);
-    await User.create({ name: "Admin", email: "admin@example.com", passwordHash: hash });
+    await User.create({ name: "Admin", email: adminEmail, passwordHash: hash });
     console.log("Admin user created.");
+  } else {
+    console.log("Updating admin password to ensure it matches 'admin'...");
+    admin.passwordHash = hash;
+    await admin.save();
+    console.log("Admin password updated.");
   }
   const tarifCount = await Tarif.count();
   if (tarifCount === 0) {
