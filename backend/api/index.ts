@@ -553,6 +553,15 @@ async function bootstrap() {
 
 // Export pour Vercel
 export default async (req: VercelRequest, res: VercelResponse) => {
-  await bootstrap();
-  await app(req, res);
+  try {
+    await bootstrap();
+    await app(req, res);
+  } catch (error: any) {
+    console.error("Server error:", error);
+    res.status(500).json({ 
+      message: "Server error", 
+      error: error.message,
+      stack: error.stack 
+    });
+  }
 };
