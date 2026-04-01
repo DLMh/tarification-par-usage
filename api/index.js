@@ -80,10 +80,18 @@ async function authMiddleware(req, res, next) {
 
 app.post("/auth/login", async (req, res) => {
   const { email, password } = req.body;
+  console.log(`Login attempt for email: ${email}`);
   const user = await User.findOne({ where: { email } });
-  if (!user) return res.status(401).json({ message: "Invalid credentials" });
+  if (!user) {
+    console.log(`Login failed: User not found for email ${email}`);
+    return res.status(401).json({ message: "Invalid credentials" });
+  }
   const ok = await bcrypt.compare(password, user.passwordHash);
-  if (!ok) return res.status(401).json({ message: "Invalid credentials" });
+  if (!ok) {
+    console.log(`Login failed: Password mismatch for user ${email}`);
+    return res.status(401).json({ message: "Invalid credentials" });
+  }
+  console.log(`Login successful for user: ${email}`);
   const token = jwt.sign({ userId: user.id }, config.jwtSecret, { expiresIn: "8h" });
   res.json({ token });
 });
