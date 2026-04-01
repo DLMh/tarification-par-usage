@@ -1,9 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import express from "express";
 import cors from "cors";
-import { config } from "../src/config";
-import { sequelize } from "../src/db";
-import { createMigrator } from "../src/migrations";
+import { config } from "../backend/src/config";
+import { sequelize } from "../backend/src/db";
+import { createMigrator } from "../backend/src/migrations";
 import { Op } from "sequelize";
 import {
   Device,
@@ -13,9 +13,9 @@ import {
   Password,
   User,
   SessionStatus
-} from "../src/models";
-import { computePrice } from "../src/core/pricing";
-import { generatePassword } from "../src/core/passwordGenerator";
+} from "../backend/src/models";
+import { computePrice } from "../backend/src/core/pricing";
+import { generatePassword } from "../backend/src/core/passwordGenerator";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
