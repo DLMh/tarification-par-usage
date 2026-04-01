@@ -316,9 +316,12 @@ async function bootstrap() {
   if (bootstrapped) return;
   await createMigrator(sequelize).up();
   const userCount = await User.count();
+  console.log(`Current user count: ${userCount}`);
   if (userCount === 0) {
+    console.log("Creating default admin user...");
     const hash = await bcrypt.hash("admin", 10);
     await User.create({ name: "Admin", email: "admin@example.com", passwordHash: hash });
+    console.log("Admin user created.");
   }
   const tarifCount = await Tarif.count();
   if (tarifCount === 0) {
