@@ -38,12 +38,14 @@ Device.init(
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: DataTypes.NOW
+      defaultValue: DataTypes.NOW,
+      field: "created_at"
     },
     updatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: DataTypes.NOW
+      defaultValue: DataTypes.NOW,
+      field: "updated_at"
     }
   },
   { sequelize, tableName: "devices", underscored: true }
@@ -64,7 +66,7 @@ Tarif.init(
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     label: { type: DataTypes.STRING, allowNull: false },
     pricePer15min: { type: DataTypes.INTEGER, allowNull: false, field: "price_per_15min" },
-    minimumPrice: { type: DataTypes.INTEGER, allowNull: false }
+    minimumPrice: { type: DataTypes.INTEGER, allowNull: false, field: "minimum_price" }
   },
   { sequelize, tableName: "tarifs", timestamps: false, underscored: true }
 );
@@ -94,16 +96,18 @@ Session.init(
     deviceId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: { model: "devices", key: "id" }
+      references: { model: "devices", key: "id" },
+      field: "device_id"
     },
     tarifId: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      references: { model: "tarifs", key: "id" }
+      references: { model: "tarifs", key: "id" },
+      field: "tarif_id"
     },
-    startTime: { type: DataTypes.DATE, allowNull: false },
-    endTime: { type: DataTypes.DATE, allowNull: true },
-    durationMinutes: { type: DataTypes.INTEGER, allowNull: true },
+    startTime: { type: DataTypes.DATE, allowNull: false, field: "start_time" },
+    endTime: { type: DataTypes.DATE, allowNull: true, field: "end_time" },
+    durationMinutes: { type: DataTypes.INTEGER, allowNull: true, field: "duration_minutes" },
     amount: { type: DataTypes.INTEGER, allowNull: true },
     status: {
       type: DataTypes.ENUM("active", "paused", "finished"),
@@ -112,16 +116,19 @@ Session.init(
     isPaid: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: false
+      defaultValue: false,
+      field: "is_paid"
     },
     accumulatedMinutes: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 0
+      defaultValue: 0,
+      field: "accumulated_minutes"
     },
     lastResumedAt: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: true,
+      field: "last_resumed_at"
     }
   },
   { sequelize, tableName: "sessions", underscored: true }
@@ -143,13 +150,15 @@ Password.init(
     sessionId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: { model: "sessions", key: "id" }
+      references: { model: "sessions", key: "id" },
+      field: "session_id"
     },
     password: { type: DataTypes.STRING, allowNull: false },
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: DataTypes.NOW
+      defaultValue: DataTypes.NOW,
+      field: "created_at"
     }
   },
   { sequelize, tableName: "passwords", updatedAt: false, underscored: true }
@@ -171,10 +180,11 @@ Payment.init(
     sessionId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: { model: "sessions", key: "id" }
+      references: { model: "sessions", key: "id" },
+      field: "session_id"
     },
     amount: { type: DataTypes.INTEGER, allowNull: false },
-    paidAt: { type: DataTypes.DATE, allowNull: false }
+    paidAt: { type: DataTypes.DATE, allowNull: false, field: "paid_at" }
   },
   { sequelize, tableName: "payments", updatedAt: false, createdAt: false, underscored: true }
 );
@@ -195,11 +205,12 @@ User.init(
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     name: { type: DataTypes.STRING, allowNull: false },
     email: { type: DataTypes.STRING, allowNull: false, unique: true },
-    passwordHash: { type: DataTypes.STRING, allowNull: false },
+    passwordHash: { type: DataTypes.STRING, allowNull: false, field: "password_hash" },
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: DataTypes.NOW
+      defaultValue: DataTypes.NOW,
+      field: "created_at"
     }
   },
   { sequelize, tableName: "users", updatedAt: false, underscored: true }
