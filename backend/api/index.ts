@@ -1,7 +1,6 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import express from "express";
 import cors from "cors";
-import { Server as SocketIOServer } from "socket.io";
 import { config } from "../src/config";
 import { sequelize } from "../src/db";
 import { createMigrator } from "../src/migrations";
@@ -17,7 +16,7 @@ import {
 } from "../src/models";
 import { computePrice } from "../src/core/pricing";
 import { generatePassword } from "../src/core/passwordGenerator";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 const app = express();
