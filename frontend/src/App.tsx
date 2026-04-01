@@ -66,8 +66,7 @@ type SortDirection = 'asc' | 'desc';
 
 const MAX_TICK_EXTRAPOLATION_SECONDS = 8;
 
-const API_URL =
-  (import.meta.env.VITE_API_URL as string | undefined) ?? 'http://localhost:4000';
+const API_URL = '/api';
 
 function formatMGA(amount: number | null): string {
   if (amount == null) return '-';
