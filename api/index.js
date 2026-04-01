@@ -2,9 +2,9 @@
 
 const express = require("express");
 const cors = require("cors");
-const { config } = require("../backend/src/config");
-const { sequelize } = require("../backend/src/db");
-const { createMigrator } = require("../backend/src/migrations");
+const { config } = require("../backend/dist/src/config");
+const { sequelize } = require("../backend/dist/src/db");
+const { createMigrator } = require("../backend/dist/src/migrations");
 const { Op } = require("sequelize");
 const {
   Device,
@@ -13,9 +13,9 @@ const {
   Payment,
   Password,
   User,
-} = require("../backend/src/models");
-const { computePrice } = require("../backend/src/core/pricing");
-const { generatePassword } = require("../backend/src/core/passwordGenerator");
+} = require("../backend/dist/src/models");
+const { computePrice } = require("../backend/dist/src/core/pricing");
+const { generatePassword } = require("../backend/dist/src/core/passwordGenerator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
