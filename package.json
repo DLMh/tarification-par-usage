@@ -22,6 +22,6 @@
     "node": "22.x"
   },
   "scripts": {
-    "vercel-build": "cd backend && npm install && npx tsc -p tsconfig.json && cd .."
+    "vercel-build": "cd backend && npm install && npx tsc -p tsconfig.json && cd ../frontend && npm install && npm run build && cd .. && cp -r frontend/dist public"
   }
 }
