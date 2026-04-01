@@ -14,11 +14,15 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.0.0",
     "@vercel/node": "^5.6.22",
     "typescript": "^5.9.3"
   },
   "engines": {
     "node": "22.x"
+  },
+  "scripts": {
+    "vercel-build": "tsc -p backend/tsconfig.json"
   }
 }
