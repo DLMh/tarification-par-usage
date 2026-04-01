@@ -1,5 +1,9 @@
 'use strict';
 
+// Force pg and pg-hstore to be bundled by Vercel's trace engine
+require("pg");
+require("pg-hstore");
+
 const express = require("express");
 const cors = require("cors");
 const { config } = require("../backend/dist/src/config");
