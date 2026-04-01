@@ -63,7 +63,7 @@ Tarif.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     label: { type: DataTypes.STRING, allowNull: false },
-    pricePer15min: { type: DataTypes.INTEGER, allowNull: false },
+    pricePer15min: { type: DataTypes.INTEGER, allowNull: false, field: "price_per_15min" },
     minimumPrice: { type: DataTypes.INTEGER, allowNull: false }
   },
   { sequelize, tableName: "tarifs", timestamps: false, underscored: true }
