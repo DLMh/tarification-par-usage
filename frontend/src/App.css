@@ -1,0 +1,229 @@
+.page {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.brandTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-h);
+}
+.brandSub {
+  font-family: var(--mono);
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.content {
+  width: 960px;
+  max-width: calc(100% - 32px);
+  margin: 24px auto 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+  text-align: left;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.rowWrap {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: end;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 240px;
+}
+.field span {
+  font-size: 13px;
+  color: var(--text);
+}
+.field input {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-h);
+  border-radius: 10px;
+  padding: 10px 12px;
+  outline: none;
+}
+.field select {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-h);
+  border-radius: 10px;
+  padding: 10px 12px;
+  outline: none;
+}
+.field input:focus {
+  border-color: var(--accent-border);
+  box-shadow: 0 0 0 4px var(--accent-bg);
+}
+.field select:focus {
+  border-color: var(--accent-border);
+  box-shadow: 0 0 0 4px var(--accent-bg);
+}
+
+.btn {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-h);
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.btn.primary {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+}
+
+.error {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--text-h);
+}
+
+.muted {
+  margin-top: 12px;
+  opacity: 0.85;
+}
+
+.table {
+  margin-top: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.thead,
+.trow {
+  display: grid;
+  grid-template-columns: 80px 1fr 1fr 120px;
+  gap: 10px;
+  padding: 10px 12px;
+}
+.sessionsHead,
+.sessionsRow {
+  grid-template-columns: 70px 1fr 90px 110px 90px 1.6fr;
+}
+.historyHead,
+.historyRow {
+  grid-template-columns: 70px 1fr 170px 170px 100px 120px;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.historySummary {
+  margin-top: 12px;
+  gap: 8px;
+}
+.historyPager {
+  margin-top: 12px;
+  gap: 8px;
+  align-items: end;
+}
+.pagerField {
+  min-width: 120px;
+}
+.summaryChip {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 13px;
+  background: rgba(0, 0, 0, 0.02);
+}
+.sortBtn {
+  border: none;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  font: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+.sortBtn:hover {
+  text-decoration: underline;
+}
+.mutedInline {
+  opacity: 0.7;
+  font-size: 12px;
+  margin-left: 6px;
+}
+.thead {
+  font-size: 13px;
+  opacity: 0.85;
+  border-bottom: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.02);
+}
+.trow + .trow {
+  border-top: 1px solid var(--border);
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 40;
+}
+
+.modalCard {
+  width: min(560px, 100%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.cardInset {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.02);
+}
