@@ -63,7 +63,7 @@ function getHistoryWindow(range, anchorDate) {
 }
 
 async function authMiddleware(req, res, next) {
-  if (req.path === "/auth/login") return next();
+  if (req.path === "/api/auth/login" || req.path === "/auth/login") return next();
   const auth = req.headers.authorization;
   if (!auth || !auth.startsWith("Bearer ")) {
     return res.status(401).json({ message: "Unauthorized" });
@@ -78,7 +78,7 @@ async function authMiddleware(req, res, next) {
   }
 }
 
-app.post("/auth/login", async (req, res) => {
+app.post("/api/auth/login", async (req, res) => {
   const { email, password } = req.body;
   console.log(`Login attempt for email: ${email}`);
   const user = await User.findOne({ where: { email } });
@@ -98,25 +98,25 @@ app.post("/auth/login", async (req, res) => {
 
 app.use(authMiddleware);
 
-app.get("/devices", async (_req, res) => {
+app.get("/api/devices", async (_req, res) => {
   const devices = await Device.findAll({ order: [["id", "ASC"]] });
   const sessions = await Session.findAll({ where: { status: "active" } });
   const occupiedIds = new Set(sessions.map((s) => s.deviceId));
   res.json(devices.map((d) => ({ id: d.id, name: d.name, type: d.type, status: occupiedIds.has(d.id) ? "busy" : "free" })));
 });
 
-app.post("/devices", async (req, res) => {
+app.post("/api/devices", async (req, res) => {
   const { name, type } = req.body;
   const device = await Device.create({ name, type });
   res.status(201).json(device);
 });
 
-app.get("/tarifs", async (_req, res) => {
+app.get("/api/tarifs", async (_req, res) => {
   const tarifs = await Tarif.findAll({ order: [["id", "ASC"]] });
   res.json(tarifs.map((t) => ({ id: t.id, label: t.label, pricePer15min: t.pricePer15min, minimumPrice: t.minimumPrice })));
 });
 
-app.post("/tarifs", async (req, res) => {
+app.post("/api/tarifs", async (req, res) => {
   const { label, pricePer15min, minimumPrice } = req.body;
   if (!label || label.trim().length === 0) return res.status(400).json({ message: "Label is required" });
   if (!Number.isInteger(pricePer15min) || pricePer15min <= 0) return res.status(400).json({ message: "pricePer15min must be a positive integer" });
@@ -125,7 +125,7 @@ app.post("/tarifs", async (req, res) => {
   res.status(201).json(tarif);
 });
 
-app.put("/devices/:id", async (req, res) => {
+app.put("/api/devices/:id", async (req, res) => {
   const id = Number(req.params.id);
   const device = await Device.findByPk(id);
   if (!device) return res.status(404).json({ message: "Device not found" });
@@ -136,7 +136,7 @@ app.put("/devices/:id", async (req, res) => {
   res.json(device);
 });
 
-app.delete("/devices/:id", async (req, res) => {
+app.delete("/api/devices/:id", async (req, res) => {
   const id = Number(req.params.id);
   const active = await Session.findOne({ where: { deviceId: id, status: "active" } });
   if (active) return res.status(400).json({ message: "Device has active session and cannot be deleted" });
@@ -144,7 +144,7 @@ app.delete("/devices/:id", async (req, res) => {
   res.status(204).send();
 });
 
-app.post("/sessions/start", async (req, res) => {
+app.post("/api/sessions/start", async (req, res) => {
   const { deviceId } = req.body;
   const active = await Session.findOne({ where: { deviceId, status: "active" } });
   if (active) return res.status(400).json({ message: "Device already has an active session" });
@@ -163,7 +163,7 @@ app.post("/sessions/start", async (req, res) => {
   res.status(201).json(session);
 });
 
-app.put("/sessions/tarif/global", async (req, res) => {
+app.put("/api/sessions/tarif/global", async (req, res) => {
   const { tarifId, password } = req.body;
   if (!Number.isInteger(tarifId)) return res.status(400).json({ message: "Invalid tarifId" });
   if (!password || !password.trim()) return res.status(400).json({ message: "Password is required" });
@@ -182,7 +182,7 @@ app.put("/sessions/tarif/global", async (req, res) => {
   res.json({ tarifId: tarif.id, updatedSessions: openSessions.length });
 });
 
-app.post("/sessions/:id/pause", async (req, res) => {
+app.post("/api/sessions/:id/pause", async (req, res) => {
   const id = Number(req.params.id);
   const session = await Session.findByPk(id);
   if (!session) return res.status(404).json({ message: "Session not found" });
@@ -204,7 +204,7 @@ app.post("/sessions/:id/pause", async (req, res) => {
   res.json(session);
 });
 
-app.post("/sessions/:id/resume", async (req, res) => {
+app.post("/api/sessions/:id/resume", async (req, res) => {
   const id = Number(req.params.id);
   const session = await Session.findByPk(id);
   if (!session) return res.status(404).json({ message: "Session not found" });
@@ -218,7 +218,7 @@ app.post("/sessions/:id/resume", async (req, res) => {
   res.json(session);
 });
 
-app.post("/sessions/:id/stop", async (req, res) => {
+app.post("/api/sessions/:id/stop", async (req, res) => {
   const id = Number(req.params.id);
   const session = await Session.findByPk(id, { include: [Tarif] });
   if (!session) return res.status(404).json({ message: "Session not found" });
@@ -236,7 +236,7 @@ app.post("/sessions/:id/stop", async (req, res) => {
   res.json(session);
 });
 
-app.get("/sessions/active", async (_req, res) => {
+app.get("/api/sessions/active", async (_req, res) => {
   const sessions = await Session.findAll({ where: { status: "active" }, include: [Device, Tarif] });
   res.json(sessions.map((s) => {
     const runtime = activeSessions.get(s.id);
@@ -247,7 +247,7 @@ app.get("/sessions/active", async (_req, res) => {
   }));
 });
 
-app.get("/sessions/open", async (_req, res) => {
+app.get("/api/sessions/open", async (_req, res) => {
   const sessions = await Session.findAll({ where: { status: ["active", "paused"] }, include: [Device, Tarif] });
   res.json(sessions.map((s) => {
     const isActive = s.status === "active";
@@ -259,7 +259,7 @@ app.get("/sessions/open", async (_req, res) => {
   }));
 });
 
-app.get("/sessions/history", async (req, res) => {
+app.get("/api/sessions/history", async (req, res) => {
   const rawRange = String(req.query.range ?? "day");
   const range = rawRange === "week" || rawRange === "month" ? rawRange : "day";
   const rawDate = typeof req.query.date === "string" ? req.query.date : null;
@@ -278,7 +278,7 @@ app.get("/sessions/history", async (req, res) => {
   res.json({ range, start, end, totalAmount: rows.reduce((sum, r) => sum + r.amount, 0), count: rows.length, rows });
 });
 
-app.post("/sessions/:id/password", async (req, res) => {
+app.post("/api/sessions/:id/password", async (req, res) => {
   const id = Number(req.params.id);
   const session = await Session.findByPk(id);
   if (!session) return res.status(404).json({ message: "Session not found" });
@@ -289,7 +289,7 @@ app.post("/sessions/:id/password", async (req, res) => {
   res.json({ password: record.password });
 });
 
-app.post("/sessions/:id/pay", async (req, res) => {
+app.post("/api/sessions/:id/pay", async (req, res) => {
   const id = Number(req.params.id);
   const { amount } = req.body;
   const session = await Session.findByPk(id);
@@ -301,14 +301,14 @@ app.post("/sessions/:id/pay", async (req, res) => {
   res.status(201).json(payment);
 });
 
-app.get("/payments/daily", async (_req, res) => {
+app.get("/api/payments/daily", async (_req, res) => {
   const today = new Date(); today.setHours(0, 0, 0, 0);
   const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
   const payments = await Payment.findAll({ where: { paidAt: { [Op.gte]: today, [Op.lt]: tomorrow } } });
   res.json({ total: payments.reduce((sum, p) => sum + p.amount, 0) });
 });
 
-app.get("/payments/by-device", async (_req, res) => {
+app.get("/api/payments/by-device", async (_req, res) => {
   const payments = await Payment.findAll({ include: [Session] });
   const byDevice = new Map();
   for (const p of payments) {
