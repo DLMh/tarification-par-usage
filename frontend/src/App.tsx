@@ -725,7 +725,7 @@ function App() {
                 <input 
                   value={email} 
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="admin@example.com"
                 />
               </label>
@@ -735,12 +735,12 @@ function App() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="admin"
                 />
               </label>
               <button 
-                className="btn primary w-full py-3 px-4 rounded-lg font-medium disabled:opacity-50" 
+                className="btn primary w-full py-3 px-4 rounded-lg font-medium disabled:opacity-50 bg-blue-600 text-white hover:bg-blue-700" 
                 disabled={loading}
               >
                 {loading ? 'Connexion...' : 'Se connecter'}
