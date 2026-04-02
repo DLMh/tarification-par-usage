@@ -2,6 +2,8 @@
   "name": "tarification-par-usage",
   "version": "1.0.0",
   "dependencies": {
+    "@vercel/node": "^3.0.0",
+    "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
@@ -19,7 +21,7 @@
     "@types/node": "^22.0.0"
   },
   "engines": {
-    "node": "22.x"
+    "node": "24.x"
   },
   "scripts": {
     "build": "cd backend && npm install && npx tsc -p tsconfig.json && cd ../frontend && npm install && npm run build && cd .. && cp -r frontend/dist public"
