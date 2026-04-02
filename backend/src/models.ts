@@ -4,8 +4,6 @@ import {
   InferAttributes,
   InferCreationAttributes,
   CreationOptional,
-  NonAttribute,
-  Association
 } from "sequelize";
 import { sequelize } from "./db";
 
@@ -17,7 +15,6 @@ export class Device extends Model<
   declare name: string;
   declare type: string;
   declare createdAt: CreationOptional<Date>;
-  declare updatedAt: CreationOptional<Date>;
 }
 
 Device.init(
@@ -40,15 +37,9 @@ Device.init(
       allowNull: false,
       defaultValue: DataTypes.NOW,
       field: "created_at"
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      field: "updated_at"
     }
   },
-  { sequelize, tableName: "devices", underscored: true }
+  { sequelize, tableName: "devices", underscored: true, timestamps: true, updatedAt: false }
 );
 
 export class Tarif extends Model<
@@ -59,6 +50,7 @@ export class Tarif extends Model<
   declare label: string;
   declare pricePer15min: number;
   declare minimumPrice: number;
+  declare createdAt: CreationOptional<Date>;
 }
 
 Tarif.init(
@@ -66,9 +58,15 @@ Tarif.init(
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     label: { type: DataTypes.STRING, allowNull: false },
     pricePer15min: { type: DataTypes.INTEGER, allowNull: false, field: "price_per_15min" },
-    minimumPrice: { type: DataTypes.INTEGER, allowNull: false, field: "minimum_price" }
+    minimumPrice: { type: DataTypes.INTEGER, allowNull: false, field: "minimum_price" },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      field: "created_at",
+      defaultValue: DataTypes.NOW
+    }
   },
-  { sequelize, tableName: "tarifs", timestamps: false, underscored: true }
+  { sequelize, tableName: "tarifs", underscored: true, timestamps: true, updatedAt: false }
 );
 
 export type SessionStatus = "active" | "paused" | "finished";
@@ -88,6 +86,7 @@ export class Session extends Model<
   declare isPaid: CreationOptional<boolean>;
   declare accumulatedMinutes: CreationOptional<number>;
   declare lastResumedAt: CreationOptional<Date | null>;
+  declare createdAt: CreationOptional<Date>;
 }
 
 Session.init(
@@ -129,9 +128,15 @@ Session.init(
       type: DataTypes.DATE,
       allowNull: true,
       field: "last_resumed_at"
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      field: "created_at",
+      defaultValue: DataTypes.NOW
     }
   },
-  { sequelize, tableName: "sessions", underscored: true }
+  { sequelize, tableName: "sessions", underscored: true, timestamps: true, updatedAt: false }
 );
 
 export class Password extends Model<
@@ -161,7 +166,7 @@ Password.init(
       field: "created_at"
     }
   },
-  { sequelize, tableName: "passwords", updatedAt: false, underscored: true }
+  { sequelize, tableName: "passwords", timestamps: true, updatedAt: false, underscored: true }
 );
 
 export class Payment extends Model<
@@ -172,6 +177,7 @@ export class Payment extends Model<
   declare sessionId: number;
   declare amount: number;
   declare paidAt: Date;
+  declare createdAt: CreationOptional<Date>;
 }
 
 Payment.init(
@@ -184,9 +190,15 @@ Payment.init(
       field: "session_id"
     },
     amount: { type: DataTypes.INTEGER, allowNull: false },
-    paidAt: { type: DataTypes.DATE, allowNull: false, field: "paid_at" }
+    paidAt: { type: DataTypes.DATE, allowNull: false, field: "paid_at" },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      field: "created_at",
+      defaultValue: DataTypes.NOW
+    }
   },
-  { sequelize, tableName: "payments", updatedAt: false, createdAt: false, underscored: true }
+  { sequelize, tableName: "payments", underscored: true, timestamps: true, updatedAt: false }
 );
 
 export class User extends Model<
@@ -213,7 +225,7 @@ User.init(
       field: "created_at"
     }
   },
-  { sequelize, tableName: "users", updatedAt: false, underscored: true }
+  { sequelize, tableName: "users", underscored: true, timestamps: true, updatedAt: false }
 );
 
 // Associations
@@ -228,4 +240,3 @@ Password.belongsTo(Session, { foreignKey: "sessionId" });
 
 Session.hasOne(Payment, { foreignKey: "sessionId" });
 Payment.belongsTo(Session, { foreignKey: "sessionId" });
-
