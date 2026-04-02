@@ -717,26 +717,36 @@ function App() {
 
       <main className="content">
         {auth.status === 'anonymous' ? (
-          <section className="card">
-            <h2>Connexion</h2>
-            <form className="form" onSubmit={login}>
-              <label className="field">
-                <span>Email</span>
-                <input value={email} onChange={(e) => setEmail(e.target.value)} />
+          <section className="card max-w-md mx-auto">
+            <h2 className="text-2xl font-bold text-center mb-6">Connexion</h2>
+            <form className="form space-y-4" onSubmit={login}>
+              <label className="field block">
+                <span className="block text-sm font-medium text-gray-700 mb-2">Email</span>
+                <input 
+                  value={email} 
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="admin@example.com"
+                />
               </label>
-              <label className="field">
-                <span>Mot de passe</span>
+              <label className="field block">
+                <span className="block text-sm font-medium text-gray-700 mb-2">Mot de passe</span>
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="admin"
                 />
               </label>
-              <button className="btn primary" disabled={loading}>
-                Se connecter
+              <button 
+                className="btn primary w-full py-3 px-4 rounded-lg font-medium disabled:opacity-50" 
+                disabled={loading}
+              >
+                {loading ? 'Connexion...' : 'Se connecter'}
               </button>
             </form>
-            {error ? <div className="error">{error}</div> : null}
+            {error ? <div className="error mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg">{error}</div> : null}
           </section>
         ) : (
           <>
